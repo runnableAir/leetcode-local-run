@@ -63,7 +63,7 @@ public class RunSolution {
         Constructor<?> constructor = srcClass.getDeclaredConstructor();
         constructor.setAccessible(true);
         Object o = constructor.newInstance();
-        return setTarget(methodName, o);
+        return setTarget(methodName, o, false);
     }
 
     /**
