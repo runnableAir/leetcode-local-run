@@ -71,7 +71,7 @@ public class RunSolution {
      *
      * @param methodName 需要指定一个方法名称
      * @param solution Solution的实例
-     * @param isRecycledUse 是否固定运行时的实例对象
+     * @param isRecycledUse 是否重复使用实例对象
      * @return <code>RunSolution</code> Object
      * @throws NoSuchMethodException 方法找不到，或许是名称输入错误了
      */
