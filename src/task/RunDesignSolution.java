@@ -110,6 +110,7 @@ public class RunDesignSolution {
                 invoke(obj, methodName, parameters);
             }
             output();
+            map.clear();
         }
     }
 
