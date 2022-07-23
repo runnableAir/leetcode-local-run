@@ -53,14 +53,14 @@ public class RunSolution {
      * 根据相应的Solution的Class对象，以及已知的调用方法名称，创建一个RunSolution对象
      *
      * @param methodName 需要指定一个方法名称
-     * @param srcClass 作为Solution类的Class对象
+     * @param solutionClass 作为Solution类的Class对象
      * @return <code>RunSolution</code> Object
      *
      * @throws NoSuchMethodException 方法找不到，或许是名称输入错误了
      */
-    public static RunSolution build(String methodName, Class<?> srcClass)
+    public static RunSolution build(String methodName, Class<?> solutionClass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Constructor<?> constructor = srcClass.getDeclaredConstructor();
+        Constructor<?> constructor = solutionClass.getDeclaredConstructor();
         constructor.setAccessible(true);
         Object o = constructor.newInstance();
         return setTarget(methodName, o, false);
