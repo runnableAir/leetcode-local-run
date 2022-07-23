@@ -23,8 +23,10 @@ public class RunSolution {
     /** 需要调用的方法对象 */
     private final Method method;
 
+    private final Class<?> solutionClass;
+
     /** Solution的实例对象 */
-    private final Object obj;
+    private Object solution;
 
     /** 为运行时提供方法所需参数的一个输入流，输入流会被逐行按参数列表的参数顺序进行解析 */
     private InputStream in = System.in;
@@ -35,11 +37,13 @@ public class RunSolution {
     /** 当前调用方法需要传入的参数个数 */
     private final int paramCount;
 
+    private final boolean isRecycledUse;
 
     /* 私有化构造方法 */
-    private RunSolution(Method m, Object obj) {
+    private RunSolution(Method m, Object solution, boolean isRecycledUse) {
         this.method = m;
-        this.obj = obj;
+        this.isRecycledUse = isRecycledUse;
+        this.solutionClass = solution.getClass();
         paramCount = method.getParameterCount();
         method.setAccessible(true);
     }
@@ -52,9 +56,6 @@ public class RunSolution {
      * @return <code>RunSolution</code> Object
      *
      * @throws NoSuchMethodException 方法找不到，或许是名称输入错误了
-     * @throws InvocationTargetException 调用产生异常
-     * @throws InstantiationException 实例化产生与异常，检查是否存在一个无参构造方法
-     * @throws IllegalAccessException 非法访问异常，检查方法是否为public
      */
     public static RunSolution build(String methodName, Class<?> srcClass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -69,17 +70,22 @@ public class RunSolution {
      *
      * @param methodName 需要指定一个方法名称
      * @param solution Solution的实例
+     * @param isRecycledUse 是否固定运行时的实例对象
      * @return <code>RunSolution</code> Object
      * @throws NoSuchMethodException 方法找不到，或许是名称输入错误了
      */
-    public static RunSolution setTarget(String methodName, Object solution)
+    public static RunSolution setTarget(String methodName, Object solution, boolean isRecycledUse)
             throws NoSuchMethodException {
         Class<?> srcClass = solution.getClass();
         Method method = getMethod(srcClass, methodName);
         if (method == null) {
             throw new NoSuchMethodException("can not find method named: " + methodName);
         }
-        return new RunSolution(method, solution);
+        return new RunSolution(method, solution, isRecycledUse);
+    }
+
+    public static RunSolution setTarget(String methodName, Object solution) throws NoSuchMethodException {
+        return setTarget(methodName, solution, true);
     }
 
     /**
@@ -105,12 +111,14 @@ public class RunSolution {
      * @throws InvocationTargetException 调用方法时产生的异常
      * @throws IllegalAccessException 方法访问异常
      */
-    public void run()
-            throws IOException, InvocationTargetException, IllegalAccessException {
+    public void run() throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(this.in));
         List<String> inputLines;
         while ((inputLines = collectInput(in, paramCount)).size() > 0) {
             run(inputLines);
+            if (!isRecycledUse) {
+                solution = solutionClass.newInstance();
+            }
         }
     }
 
@@ -121,12 +129,12 @@ public class RunSolution {
      * @throws InvocationTargetException 调用方法时产生的异常
      * @throws IllegalAccessException 方法访问异常
      */
-    public void run(List<String> inputLines)
+    protected void run(List<String> inputLines)
             throws InvocationTargetException, IllegalAccessException {
         // get parameters including generic type
         Type[] types = method.getGenericParameterTypes();
         Object[] args = stringsToParameters(inputLines, types);
-        output(method.invoke(obj, args));
+        output(method.invoke(solution, args));
     }
 
     private void output(Object o) {
