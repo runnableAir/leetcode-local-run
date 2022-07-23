@@ -118,7 +118,9 @@ public class RunSolution {
         while ((inputLines = collectInput(in, paramCount)).size() > 0) {
             run(inputLines);
             if (!isRecycledUse) {
-                solution = solutionClass.newInstance();
+                Constructor<?> constructor = solutionClass.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                solution = constructor.newInstance();
             }
         }
     }
