@@ -43,6 +43,7 @@ public class RunSolution {
     private RunSolution(Method m, Object solution, boolean isRecycledUse) {
         this.method = m;
         this.isRecycledUse = isRecycledUse;
+        this.solution = solution;
         this.solutionClass = solution.getClass();
         paramCount = method.getParameterCount();
         method.setAccessible(true);
