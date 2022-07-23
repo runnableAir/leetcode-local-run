@@ -137,6 +137,7 @@ public class RunSolution {
 
     /**
      * 从现成的输入内容中解析参数，输入内容是一个List对象，存储的每个字符串表示一行内容
+     * 将每一行内容按方法声明的参数顺序进行解析，然后带着这些参数执行相应的方法
      *
      * @param inputLines 输入的内容，一行一个字符串
      * @throws InvocationTargetException 调用方法时产生的异常
