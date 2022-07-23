@@ -85,6 +85,16 @@ public class RunSolution {
         return new RunSolution(method, solution, isRecycledUse);
     }
 
+    /**
+     * 根据现成的Solution实例，以及已知的调用方法名称，创建一个RunSolution对象，
+     * 这样做等同于调用 {@code setTarget(methodName, object, false)}，
+     * 返回的RunSolution对象将会一直持有当前Solution的实例
+     *
+     * @param methodName 需要指定一个方法名称
+     * @param solution Solution的实例
+     * @return <code>RunSolution</code> Object
+     * @throws NoSuchMethodException 方法找不到，或许是名称输入错误了
+     */
     public static RunSolution setTarget(String methodName, Object solution) throws NoSuchMethodException {
         return setTarget(methodName, solution, true);
     }
