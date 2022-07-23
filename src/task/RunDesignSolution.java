@@ -6,10 +6,7 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 /**
  * 运行leetcode的“实现类"题目。
@@ -48,6 +45,7 @@ public class RunDesignSolution {
     /** 重定向程序的输出流 */
     private final PrintStream out = new PrintStream(bos, true);
 
+    private final Map<String, RunSolution> map = new HashMap<>();
 
     /* 私有化 */
     private RunDesignSolution(List<List<Array>> inputs) {
@@ -129,7 +127,14 @@ public class RunDesignSolution {
             IllegalAccessException, NoSuchMethodException {
         // convert
         List<String> inputLines = parameters.convertToStringList();
-        RunSolution.setTarget(methodName, obj).setOut(out).run(inputLines);
+        RunSolution runSolution;
+        if (map.containsKey(methodName)) {
+            runSolution = map.get(methodName);
+        } else {
+            runSolution = RunSolution.setTarget(methodName, obj).setOut(out);
+            map.put(methodName, runSolution);
+        }
+        runSolution.run(inputLines);
     }
 
     /**
