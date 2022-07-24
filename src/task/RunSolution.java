@@ -39,6 +39,8 @@ public class RunSolution {
 
     private final boolean isRecycledUse;
 
+    private final List<String> inputLines = new ArrayList<>();
+
     /* 私有化构造方法 */
     private RunSolution(Method m, Object solution, boolean isRecycledUse) {
         this.method = m;
@@ -124,8 +126,7 @@ public class RunSolution {
      */
     public void run() throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(this.in));
-        List<String> inputLines;
-        while ((inputLines = collectInput(in, paramCount)).size() > 0) {
+        while (collectInput(in) >= paramCount) {
             run(inputLines);
             if (!isRecycledUse) {
                 Constructor<?> constructor = solutionClass.getDeclaredConstructor();
@@ -133,6 +134,7 @@ public class RunSolution {
                 solution = constructor.newInstance();
             }
         }
+        in.close();
     }
 
     /**
@@ -247,19 +249,16 @@ public class RunSolution {
         return null;
     }
 
-    private List<String> collectInput(BufferedReader in, int limit) throws IOException {
-        List<String> ret = new ArrayList<>();
-        String line = null;
-        while (ret.size() < limit && (line = in.readLine()) != null) {
+    private int collectInput(BufferedReader in) throws IOException {
+        inputLines.clear();
+        String line;
+        while (inputLines.size() < paramCount && (line = in.readLine()) != null) {
             if (line.isEmpty()) {
                 continue;
             }
-            ret.add(line);
+            inputLines.add(line);
         }
-        if (line == null) {
-            in.close();
-        }
-        return ret;
+        return inputLines.size();
     }
 
 }
