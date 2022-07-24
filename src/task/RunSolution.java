@@ -251,6 +251,9 @@ public class RunSolution {
         List<String> ret = new ArrayList<>();
         String line = null;
         while (ret.size() < limit && (line = in.readLine()) != null) {
+            if (line.isEmpty()) {
+                continue;
+            }
             ret.add(line);
         }
         if (line == null) {
