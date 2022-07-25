@@ -1,6 +1,7 @@
 package task;
 
 import input.TestUtil;
+import input.tree.binary.TreeNode;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -177,6 +178,8 @@ public class RunSolution {
             return TestUtil.stringArrayToString((String[]) o);
         } else if (o instanceof List) {
             return TestUtil.listToString((List<?>) o);
+        } else if (o instanceof TreeNode) {
+            return TestUtil.treeNodeToString((TreeNode) o);
         }
         return String.valueOf(o);
     }
