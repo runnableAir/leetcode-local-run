@@ -256,6 +256,10 @@ public class TestUtil {
             TreeNode node = nodeQueue.remove();
 
             if (node == null) {
+                // 下一个node为null，或者队列为空，不再填充"null"
+                if (nodeQueue.peek() == null) {
+                    break;
+                }
                 output.append("null, ");
                 continue;
             }
