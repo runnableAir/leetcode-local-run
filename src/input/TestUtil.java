@@ -249,6 +249,10 @@ public class TestUtil {
             return "[]";
         }
 
+        // serialization of tree node
+        final String nullItem = "null";
+        final String sep = ", ";
+
         StringBuilder output = new StringBuilder();
         Queue<TreeNode> nodeQueue = new LinkedList<>();
         nodeQueue.add(root);
@@ -256,13 +260,20 @@ public class TestUtil {
             TreeNode node = nodeQueue.remove();
 
             if (node == null) {
-                output.append("null, ");
+                output.append(nullItem).append(sep);
                 continue;
             }
 
-            output.append(node.val).append(", ");
+            output.append(node.val).append(sep);
             nodeQueue.add(node.left);
             nodeQueue.add(node.right);
+        }
+
+        // remove redundant "null"
+        int nullWidth = nullItem.length() + sep.length();
+        int nullIndex;
+        while ((nullIndex = output.lastIndexOf("null")) == output.length() - nullWidth) {
+            output.delete(nullIndex, output.length());
         }
         return "[" + output.substring(0, output.length() - 2) + "]";
     }
