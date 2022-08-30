@@ -1,12 +1,10 @@
 # leetcode-local-run
 
-这是一个可以让自己在本地 IDE 模拟 `leetcode` 刷题过程的项目。
+这是一个可以让自己在本地 IDE 模拟 `leetcode` 刷题过程的 demo。
 
 ## 前言
 
-虽然在本地测试 [**leetcode**](https://leetcode.cn/problems/) 代码并不困难，但好奇心驱使着我，设法将这个过程做地更自然。
-
-> 没想到，在刷题路上的某一天，会被 leetcode 读取输入和运行提交的方式所吸引，投身于“课外”实践。
+虽然在本地测试 [**leetcode**](https://leetcode.cn/problems/) 代码并不困难，但好奇心驱使着我，于是就有了这个 demo。
 
 在 `leetcode` 进行刷题时，会提供一个类的模板，让我们实现特定的方法
 
@@ -78,7 +76,7 @@ class Trie {
 
 ## 使用方法
 
-对于第一种类型的题目，我们需要使用 `RunSolution` 类。
+对于第一种类型的题目，需要使用 `RunSolution` 类。
 
 首先，调用 `build` 构建对象，通过 `setIn` 设置读取的输入流，最后调用 `run` 执行代码。
 
@@ -126,7 +124,7 @@ class Solution {
 
 ---
 
-对于第二种类型的题目，我们需要使用 `RunDesignSolution` 类。
+对于第二种类型的题目，需要使用 `RunDesignSolution` 类。
 
 它与前者的特殊之处在于，它是需要先指明输入的样例，然后按照输入的指令，执行传入的 `Class` 。
 
