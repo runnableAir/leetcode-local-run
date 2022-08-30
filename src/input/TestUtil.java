@@ -275,7 +275,7 @@ public class TestUtil {
         while ((nullIndex = output.lastIndexOf("null")) == output.length() - nullWidth) {
             output.delete(nullIndex, output.length());
         }
-        return "[" + output.substring(0, output.length() - 2) + "]";
+        return "[" + output.substring(0, output.length() - sep.length()) + "]";
     }
 
     // TODO 重构下面的工具方法，整理注释文档
