@@ -173,15 +173,15 @@ public class RunDesignSolution {
      * @return 返回当前缓存的程序输出结果，文本格式由 {@link #outputMode} 决定
      */
     private String getResult() {
-        if (outputMode == ARRAY_LIKED) {
-            String s = bos.toString();
-            StringJoiner joiner = new StringJoiner(",", "[", "]");
-            for (String item : s.split(System.lineSeparator())) {
-                joiner.add(item);
-            }
-            return joiner.toString();
+        if (outputMode == LINE_BY_LINE) {
+            return bos.toString();
         }
-        return bos.toString();
+        String s = bos.toString();
+        StringJoiner joiner = new StringJoiner(",", "[", "]");
+        for (String item : s.split(System.lineSeparator())) {
+            joiner.add(item);
+        }
+        return joiner.toString();
     }
 
     /**
