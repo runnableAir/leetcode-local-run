@@ -9,19 +9,22 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 /**
- * 运行leetcode的“实现类"题目。
+ * RunDesignSolution在RunSolution的基础上实现了“连续多次运行不同方法”的功能，类似测试点功能。
  * <p>
- * 运行方式：输入一系列方法名称表示调用顺序、结合给定的参数进行测试。
- * 每组测试共两行输入：
- * <li>1.调用顺序：     {@code ["A", "B", "C", ..., "X"]}</li>
- * <li>2.相应的参数顺序：{@code [[p1, p2, p3], [p4], [p5, p6], ..., []]}</li>
+ * 这可以说是专门运行leetcode的“实现类题目"的代码的工具类。<br>
+ * 每次运行需要一组测试样例: 先输入一系列的方法名称，表明要测试的方法和它们测试的顺序，再输入一系列对应的参数。
+ * 例如：
+ * <ul>
+ *     <li>1.调用顺序：     {@code ["A", "B", "C", ..., "X"]}</li>
+ *     <li>2.相应的参数顺序：{@code [[p1, p2, p3], [p4], [p5, p6], ..., []]}</li>
+ * </ul>
  * </p>
  * <p>
  * 调用方式：
  * 通过 {@link #setIn(InputStream)} 从输入流中读取程序的输入内容，
  * 再通过 {@link  #run(Class)} 方法运行程序；
  * </p>
- * 在执行之前，可以通过 {@link #setOutPrefer(int)} 设置输出的内容格式，传入的参数有两种，分别是
+ * 在执行 run() 之前，可以通过 {@link #setOutPrefer(int)} 设置输出的内容格式，传入的参数有两种，分别是
  * {@link #LINE_BY_LINE} 和 {@link #ARRAY_LIKED}
  * 默认情况下是以”数组“的形式展示（即和leetcode一致）
  */
@@ -33,8 +36,8 @@ public class RunDesignSolution {
     /** 输出模式2：数组型，以数组形式展示 */
     public static final int ARRAY_LIKED = 1;
 
-    /** 当前输出模式，默认为{@link #LINE_BY_LINE} */
-    private int outputMode = LINE_BY_LINE;
+    /** 当前输出模式，默认为{@link #ARRAY_LIKED} */
+    private int outputMode = ARRAY_LIKED;
 
     /** 当前设置的多组样例，每组样例有两个 {@link Array} 对象，分别存储调用方法的顺序和参数顺序 */
     private final List<List<Array>> inputs;
@@ -45,6 +48,7 @@ public class RunDesignSolution {
     /** 重定向程序的输出流 */
     private final PrintStream out = new PrintStream(bos, true);
 
+    /** 对不同方法的RunSolution进行缓存 */
     private final Map<String, RunSolution> map = new HashMap<>();
 
     /* 私有化 */
@@ -53,7 +57,11 @@ public class RunDesignSolution {
     }
 
     /**
-     * 从指定输入流中读取程序的方法调用序列和传入的参数序列，并构建 {@link RunDesignSolution} 对象
+     * 从输入流中读取测试样例，并构建 {@link RunDesignSolution} 对象
+     * <p>
+     * 一组测试样例分两行输入，
+     * 第一行是一个数组，包含一系列方法名称，
+     * 第二行也是一个数组，包含一些列的方法参数与方法对应。
      *
      * @param in 输入流
      * @return 包含特定方法调用序列和参数序列的 {@link RunDesignSolution} 对象
@@ -73,7 +81,7 @@ public class RunDesignSolution {
     }
 
     /**
-     * 设置的输出方式：{@link #LINE_BY_LINE} 或 {@link #ARRAY_LIKED}
+     * 设置输出风格：{@link #LINE_BY_LINE} 或 {@link #ARRAY_LIKED}
      *
      * @param mode {@link #LINE_BY_LINE} 或 {@link #ARRAY_LIKED}
      * @return 当前 {@link RunDesignSolution} 对象
@@ -84,7 +92,7 @@ public class RunDesignSolution {
     }
 
     /**
-     * 从指定的 {@link Class} 构建程序运行对象，并按当前设置的调用方法序列和参数序列运行
+     * 设置指定的 {@link Class} 对象，创建实例后，并按当前设置的调用方法序列和参数序列运行
      *
      * @param target 目标源 Class 对象
      * @throws InvocationTargetException 调用异常，通常为程序代码错误导致
