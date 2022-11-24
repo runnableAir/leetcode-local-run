@@ -55,6 +55,8 @@ public class Array {
     }
 
     private void parse(String str) {
+        // 去除换行和缩进，避免解析失误
+        str = str.replaceAll("[\t\n]", "");
         int idx = 0;
         int n = str.length();
         while (++idx < n) {
